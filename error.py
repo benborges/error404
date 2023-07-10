@@ -30,7 +30,7 @@ class MyHandler(FileSystemEventHandler):
 if __name__ == "__main__":
     event_handler = MyHandler()
     observer = Observer()
-    observer.schedule(event_handler, path='/var/log/nginx/', recursive=False)
+    observer.schedule(event_handler, path='/var/log/nginx/error.log', recursive=False)
     observer.start()
 
     try:
