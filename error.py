@@ -1,5 +1,6 @@
 import time
 import os
+import re
 import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -14,16 +15,18 @@ class MyHandler(FileSystemEventHandler):
             with open(event.src_path, "r") as file:
                 last_two_lines = file.readlines()[-2:]
                 for line in last_two_lines:
+                    timestamp = re.search(r'\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}', line)
+                    host = re.search(r'host: "([^"]*)"', line)
                     if "HTTP/1.1\" 404" in line: 
                         print("Error 404 found!")
-                        self.trigger_webhook('HTTP 404 error occurred in nginx')
+                        self.trigger_webhook('HTTP 404 error occurred in nginx', timestamp.group(), host.group(1) if host else 'Unknown')
                     elif "Unknown error" in line:
                         print("Unknown error found!")
-                        self.trigger_webhook('Unknown error occurred in nginx')
+                        self.trigger_webhook('Unknown error occurred in nginx', timestamp.group(), host.group(1) if host else 'Unknown')
 
-    def trigger_webhook(self, error_msg):
+    def trigger_webhook(self, error_msg, timestamp, host):
         url = os.getenv('WEBHOOK_URL')
-        data = {'text': error_msg}
+        data = {'text': error_msg, 'timestamp': timestamp, 'host': host}
         response = requests.post(url, json=data)
         print("Webhook triggered, status code:", response.status_code)
 
