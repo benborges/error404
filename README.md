@@ -6,3 +6,9 @@ This script watches /var/log/nginx/error.log for changes. Whenever the file is m
 
 Using https://ntfy.sh to receive the errors and subscribe to them either on desktop or mobile
 with the ability to tune notifications and only receive the ones that are urgent.
+
+## usage
+
+- cp .env-sample .env
+- add your webhook url to send alerts to
+- run python error.py
