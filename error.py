@@ -22,8 +22,8 @@ class MyHandler(FileSystemEventHandler):
                             self.trigger_webhook('HTTP 404 error occurred in nginx', timestamp.group(), host.group(1) if host else 'Unknown')
                         elif "Unknown error" in line:
                             self.trigger_webhook('Unknown error occurred in nginx', timestamp.group(), host.group(1) if host else 'Unknown')
-                    elif event.src_path.endswith('box.log'):
-                        timestamp = re.search(r'(\w{3} \d{2} \d{2}:\d{2}:\d{2})', line)
+                    elif event.src_path.endswith('box.log'):)
+                        timestamp = re.search(r'(\w{3} \d{1,2} \d{2}:\d{2}:\d{2})', line)
                         if 'unresponsive' in line and not '0 unresponsive' in line:
                             self.trigger_webhook('App became unresponsive', timestamp.group(), 'box.log')
 
