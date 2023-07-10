@@ -9,10 +9,13 @@ class MyHandler(FileSystemEventHandler):
         print(f'Event type: {event.event_type}  path : {event.src_path}')
         if event.src_path == "/var/log/nginx/error.log":
             with open(event.src_path, "r") as file:
-                lines = file.readlines()
-                if "HTTP/1.1\" 404" in lines[-1]: # check if the last line of the file contains 'HTTP/1.1" 404'
+                last_line = file.readlines()[-2]
+                if "HTTP/1.1\" 404" in last_line: # check if the last line of the file contains 'HTTP/1.1" 404'
                     print("Error 404 found!")
-                    self.trigger_webhook()
+                    self.trigger_webhook('HTTP 404 error occurred in nginx')
+                elif "Unknown error" in last_line:
+                    print("Unknown error found!")
+                    self.trigger_webhook('Unknown error occurred in nginx')
 
     def trigger_webhook(self):
         url = 'https://your-webhook-url'
