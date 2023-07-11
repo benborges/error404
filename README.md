@@ -11,4 +11,12 @@ with the ability to tune notifications and only receive the ones that are urgent
 
 - cp .env-sample .env
 - add your webhook url to send alerts to
+- Adapt the keywords to watch on your log files
 - run python error.py
+- Copy/Paste n8n-workflow.json into N8N
+- Configure your ntfy instance
+- Configure your ntfy Topic
+
+that's it !
+
+You should be getting notification when anything match. 
