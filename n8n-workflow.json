@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "instanceId": "5ad542210943ceb049325caf5a17ae4154db90c0f331cbe82a07345a3983be38"
+  },
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "nginx-errors",
+        "message": "=Type : {{ $json.body.text }}\nTime :  {{ $json.body.timestamp }}\nHost : {{ $json.body.host }}",
+        "title": "Error404",
+        "priority": 5,
+        "click": "=https://{{ $json.body.host }}",
+        "tags": "=HTTP",
+        "additional_fields": {
+          "alternate_url": "https://ntfy.sh"
+        }
+      },
+      "id": "a22ba214-88e6-4b1a-a1dc-9cea63bd9c04",
+      "name": "Ntfy",
+      "type": "n8n-nodes-ntfy.Ntfy",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "YOUR_TOPIC",
+        "options": {}
+      },
+      "id": "f02910a1-8332-4ff5-a65b-8b3825fc6aa8",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        680,
+        400
+      ],
+      "webhookId": "7aa1ae9e-dc7c-4c03-84fc-fa5bca542234"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Ntfy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
